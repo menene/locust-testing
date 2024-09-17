@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: ./dockerfiles/api/Dockerfile
+    ports:
+      - "3000:3000"
+
+  locust:
+    build:
+      context: .
+      dockerfile: ./dockerfiles/locust/Dockerfile
+    command: locust -f /locust/locustfile.py --host=http://api:3000
+    ports:
+      - "8089:8089"
+    depends_on:
+      - api
